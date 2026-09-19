@@ -299,8 +299,240 @@ Esto compila los recursos utilizados por Vite y Tailwind CSS.
 ```bash
 composer run dev
 ```
+
+---
+
 ### Enlace del proyecto
 
-```bash
+```http
 http://127.0.0.1:8000/dashboard
 ```
+
+---
+
+## 8. Credenciales de prueba
+
+### Los seeders crean los siguientes usuarios administradores.
+
+Administrador 1
+
+```text
+Correo: admin@ventasfix.cl
+Contraseña: Admin12345
+Rol: admin
+```
+
+Administrador 2
+
+```text
+Correo: admin2@ventasfix.cl
+Contraseña: Admin12345
+Rol: admin
+```
+
+
+Los usuarios creados posteriormente desde la aplicación reciben el rol:
+`usuario`
+
+---
+
+## 9. Navegación del sistema
+
+### Una vez iniciada la sesión, el sistema dispone de las siguientes secciones:
+
+```text
+Dashboard
+├── Usuarios (solo administrador)
+├── Productos
+└── Clientes
+```
+
+La sección Usuarios solamente está disponible para administradores.
+
+---
+
+## 10. API REST
+
+ La API se encuentra bajo el prefijo:
+
+```http
+/api
+```
+
+---
+
+### Autenticación
+
+#### Iniciar sesión
+
+```http
+POST /api/login
+```
+
+Permite obtener un token de autenticación mediante Laravel Sanctum.
+
+```json
+Ejemplo de solicitud:
+
+{
+    "email": "admin@ventasfix.cl",
+    "password": "Admin12345"
+}
+```
+La respuesta contiene el token necesario para realizar solicitudes protegidas.
+
+#### Usuario autenticado
+
+```http
+GET /api/me
+```
+
+Requiere:
+
+```text
+Authorization: Bearer TOKEN
+```
+
+Permite consultar los datos del usuario autenticado.
+
+#### Cerrar sesión
+
+```http
+POST /api/logout
+```
+
+Requiere autenticación mediante Bearer Token.
+
+---
+
+## 11. Endpoints de usuarios
+
+Los endpoints de usuarios requieren autenticación y privilegios de administrador.
+
+| Método    | Endpoint          | Descripción        |
+| --------- | ----------------- | ------------------ |
+| GET       | `/api/users`      | Listar usuarios    |
+| POST      | `/api/users`      | Crear usuario      |
+| GET       | `/api/users/{id}` | Consultar usuario  |
+| PUT/PATCH | `/api/users/{id}` | Actualizar usuario |
+| DELETE    | `/api/users/{id}` | Eliminar usuario   |
+
+---
+
+## 12. Endpoints de productos
+
+| Método    | Endpoint             | Descripción         |
+| --------- | -------------------- | ------------------- |
+| GET       | `/api/products`      | Listar productos    |
+| POST      | `/api/products`      | Crear producto      |
+| GET       | `/api/products/{id}` | Consultar producto  |
+| PUT/PATCH | `/api/products/{id}` | Actualizar producto |
+| DELETE    | `/api/products/{id}` | Eliminar producto   |
+
+Las operaciones requieren autenticación mediante Laravel Sanctum.
+
+---
+
+## 12. Endpoints de clientes
+
+| Método    | Endpoint            | Descripción        |
+| --------- | ------------------- | ------------------ |
+| GET       | `/api/clients`      | Listar clientes    |
+| POST      | `/api/clients`      | Crear cliente      |
+| GET       | `/api/clients/{id}` | Consultar cliente  |
+| PUT/PATCH | `/api/clients/{id}` | Actualizar cliente |
+| DELETE    | `/api/clients/{id}` | Eliminar cliente   |
+
+
+Las operaciones requieren autenticación mediante Laravel Sanctum.
+
+---
+
+## 13. Validaciones
+
+El sistema incorpora validaciones tanto en las operaciones de la interfaz web como en la API.
+
+### Usuarios
+
+Se valida:
+
+- RUT obligatorio y único.
+- Nombre obligatorio.
+- Apellido obligatorio.
+- Correo obligatorio.
+- Formato de correo válido.
+- Correo perteneciente al dominio @ventasfix.cl.
+- Contraseña obligatoria durante el registro.
+- Contraseña con mínimo 8 caracteres.
+- Correo único durante la actualización, exceptuando el usuario actual.
+
+### Productos
+
+Se valida:
+
+- SKU obligatorio y único.
+- Nombre obligatorio.
+- Descripción corta obligatoria.
+- Descripción larga obligatoria.
+- Imagen obligatoria al crear.
+- Formatos JPG, JPEG, PNG y WEBP.
+- Tamaño máximo de 5 MB.
+- Precio neto obligatorio.
+- Valores de stock obligatorios.
+- Precio de venta calculado por el servidor.
+
+### Clientes
+
+Se valida:
+
+- RUT de empresa obligatorio y único.
+- Rubro obligatorio.
+- Razón social obligatoria.
+- Teléfono obligatorio.
+- Dirección obligatoria.
+- Nombre de contacto obligatorio.
+- Correo de contacto obligatorio.
+- Formato de correo válido.
+
+---
+
+## 14. Seguridad y autorización
+
+El sistema utiliza diferentes mecanismos para proteger la información:
+
+### Autenticación web
+
+Las rutas administrativas requieren una sesión iniciada.
+
+```text
+auth
+```
+
+### Autorización
+
+Las operaciones relacionadas con usuarios están protegidas mediante middleware de administrador:
+
+```text
+admin
+```
+
+### API
+
+La API utiliza:
+
+```text
+Laravel Sanctum
+```
+
+Las rutas protegidas requieren un token Bearer válido.
+
+### Contraseñas
+
+Las contraseñas no se almacenan directamente.
+
+Antes de guardarse se aplica:
+
+```text
+Hash::make($password)
+```
+
