@@ -18,7 +18,7 @@
 
     <div class="bg-white rounded-xl shadow-sm p-6">
 
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <dl class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <div>
                 <dt class="text-sm text-gray-500">ID</dt>
@@ -84,7 +84,7 @@
                     <img
                         src="{{ asset('storage/' . $product->imagen) }}"
                         alt="{{ $product->nombre }}"
-                        class="mt-2 h-64 w-64 rounded-lg object-cover border"
+                        class="mt-2 h-64 w-96 rounded-lg object-cover border"
                     >
                 @else
                     <p class="mt-2 text-gray-500">
@@ -92,6 +92,7 @@
                     </p>
                 @endif
             </div>
+
 
         </dl>
 

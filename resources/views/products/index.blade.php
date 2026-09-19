@@ -32,6 +32,7 @@
                         <th class="px-6 py-4">ID</th>
                         <th class="px-6 py-4">SKU</th>
                         <th class="px-6 py-4">Producto</th>
+                        <th class="px-6 py-4">Imagen</th>
                         <th class="px-6 py-4">Precio venta</th>
                         <th class="px-6 py-4">Stock</th>
                         <th class="px-6 py-4">Acciones</th>
@@ -60,7 +61,7 @@
                                     <img
                                         src="{{ asset('storage/' . $product->imagen) }}"
                                         alt="{{ $product->nombre }}"
-                                        class="h-16 w-16 rounded-lg object-cover border"
+                                        class="h-20 w-32 rounded-lg object-cover border"
                                     >
                                 @else
                                     <span class="text-sm text-gray-500">
